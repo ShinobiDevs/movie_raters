@@ -29,7 +29,13 @@ gem 'jbuilder', '~> 1.2'
 
 gem "hiredis"
 gem "redis", ">= 2.2.0", :require => ["redis", "redis/connection/hiredis"]
-
+group :development do
+  gem "httparty"
+  gem "thin"
+  gem "rspec"
+  gem "rspec-rails"
+  gem "faker"
+end
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false

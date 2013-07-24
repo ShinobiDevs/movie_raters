@@ -1,7 +1,9 @@
 MovieRaters::Application.routes.draw do
-  resources :movies
 
-  resources :users
+  resources :movies, only: [:index, :show, :create, :update, :destroy]
+  resources :users, only: [:index, :show, :create, :update, :destroy] do
+    resources :likes, only: [:index, :create, :destroy]
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

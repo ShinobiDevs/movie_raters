@@ -12,14 +12,18 @@ class MoviesController < ApplicationController
   # GET /movies/1.json
   # GET /movies/1.xml
   def show
-    @movie = Movie.find(params[:id])
-    respond_with(@movie)
+    @movie = Movie.where(id: params[:id]).first
+    if @movie.blank?
+      render nothing: true, status: :not_found
+    else
+      respond_with(@movie)
+    end
   end
 
   # POST /movies.json
   # POST /movies.xml
   def create
-    @movie = Movie.new(params[:movie])
+    @movie = Movie.new(params.require(:movie).permit(:name, :year, :genres))
     @movie.save
     respond_with(@movie)
   end
@@ -27,16 +31,24 @@ class MoviesController < ApplicationController
   # PUT /movies/1.json
   # PUT /movies/1.xml
   def update
-    @movie = Movie.find(params[:id])
-    @movie.update_attributes(params[:movie])
-    respond_with(@movie)
+    @movie = Movie.where(id: params[:id]).first
+    if @movie.blank?
+      render nothing: true, status: :not_found
+    else
+      @movie.update_attributes(params.require(:movie).permit(:name, :year, :genres))
+      respond_with(@movie)
+    end
   end
 
   # DELETE /movies/1.json
   # DELETE /movies/1.xml
   def destroy
-    @movie = Movie.find(params[:id])
-    @movie.destroy
-    render nothing: true, status: 200
+    @movie = Movie.where(id: params[:id]).first
+    if @movie.blank?
+      render nothing: true, status: :not_found
+    else
+      @movie.destroy
+      render nothing: true, status: :ok
+    end
   end
 end
